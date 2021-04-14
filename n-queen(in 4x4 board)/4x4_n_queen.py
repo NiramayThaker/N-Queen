@@ -1,23 +1,19 @@
-# Python3 program to solve N Queen
-# Problem using backtracking
+# N is global variable stands for board size
 global N
 N = 4
 
 
-def printSolution(board):
+# It will display solution
+def display_solution(board):
     for i in range(N):
         for j in range(N):
             print(board[i][j], end=" ")
         print()
 
 
-# A utility function to check if a queen can
-# be placed on board[row][col]. Note that this
-# function is called when "col" queens are
-# already placed in columns from 0 to col -1.
-# So we need to check only left side for
-# attacking queens
-def isSafe(board, row, col):
+# checking is queen safe from attack
+# We have to check it for left side of board as first queen will be on right already
+def is_queen_safe(board, row, col):
     # Check this row on left side
     for i in range(col):
         if board[row][i] == 1:
@@ -38,58 +34,43 @@ def isSafe(board, row, col):
     return True
 
 
-def solveNQUtil(board, col):
-    # base case: If all queens are placed
-    # then return true
+def solve(board, col):
+    # if all queens are placed then return true
     if col >= N:
         return True
 
-    # Consider this column and try placing
-    # this queen in all rows one by one
+    # placing queens
     for i in range(N):
 
-        if isSafe(board, i, col):
-
-            # Place this queen in board[i][col]
+        if is_queen_safe(board, i, col):
             board[i][col] = 1
 
             # recur to place rest of the queens
-            if solveNQUtil(board, col + 1) == True:
+            if solve(board, col + 1) == True:
                 return True
-
-            # If placing queen in board[i][col
-            # doesn't lead to a solution, then
-            # queen from board[i][col]
+            # If placing queen at board[i][col] doesn't give solution
+            # start backtracking
             board[i][col] = 0
 
-    # if the queen can not be placed in any row in
-    # this colum col then return false
+    # Return false if queen can't we placed at any place
     return False
 
 
-# This function solves the N Queen problem using
-# Backtracking. It mainly uses solveNQUtil() to
-# solve the problem. It returns false if queens
-# cannot be placed, otherwise return true and
-# placement of queens in the form of 1s.
-# note that there may be more than one
-# solutions, this function prints one of the
-# feasible solutions.
-def solveNQ():
+# solve() is having backtracking it will return true if queen is placed and false if not
+# Where you can see 1 is the place where queen is placed
+
+def to_run():
     board = [[0, 0, 0, 0],
              [0, 0, 0, 0],
              [0, 0, 0, 0],
              [0, 0, 0, 0]]
 
-    if solveNQUtil(board, 0) == False:
+    if solve(board, 0) == False:
         print("Solution does not exist")
         return False
 
-    printSolution(board)
+    display_solution(board)
     return True
 
 
-# Driver Code
-solveNQ()
-
-# This code is contributed by Divyanshu Mehta
+to_run()
